@@ -2,12 +2,32 @@
 
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
+use FondOfSpryker\Shared\Customer\CustomerConstants;
 use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as SprykerOrderConfirmationMailTypePlugin;
+use Orm\Zed\Country\Persistence\SpyCountryQuery;
 
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
 {
+    /**
+     * @api
+     *
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
+     *
+     * @return void
+     */
+    public function build(MailBuilderInterface $mailBuilder)
+    {
+        $this
+            ->setSubject($mailBuilder)
+            ->setHtmlTemplate($mailBuilder)
+            ->setTextTemplate($mailBuilder)
+            ->setRecipient($mailBuilder)
+            ->setSender($mailBuilder)
+            ->isBillingAddressInEU($mailBuilder);
+    }
+
     protected function setSubject(MailBuilderInterface $mailBuilder)
     {
         /** @var \Generated\Shared\Transfer\OrderTransfer $orderTransfer */
@@ -34,5 +54,26 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         }
 
         return 'default.';
+    }
+
+    protected function isBillingAddressInEU(MailBuilderInterface &$mailBuilder)
+    {
+        /** @var \Generated\Shared\Transfer\AddressTransfer $billingAddress */
+        $billingAddress = $mailBuilder->getMailTransfer()->getOrder()->getBillingAddress();
+
+        if (!$billingAddress->getIso2Code()) {
+            $spyCountry = SpyCountryQuery::create()->findPk(
+                $mailBuilder->getMailTransfer()->getOrder()->getBillingAddress()->getFkCountry(),
+                null
+            );
+
+            $billingAddress->setIso2Code($spyCountry->getIso2Code());
+        }
+
+        $isCountryInEU = (in_array($billingAddress->getIso2Code(), CustomerConstants::COUNTRIES_IN_EU))
+            ? true
+            : false;
+
+        $mailBuilder->getMailTransfer()->getOrder()->getBillingAddress()->setIsCountryInEu($isCountryInEU);
     }
 }
