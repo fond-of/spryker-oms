@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
 use FondOfSpryker\Shared\Customer\CustomerConstants;
+use FondOfSpryker\Zed\Mail\MailConfig;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
@@ -13,13 +14,28 @@ use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
 {
     /**
+     * @var \FondOfSpryker\Zed\Mail\MailConfig
+     */
+    protected $config;
+
+    /**
+     * OrderConfirmationMailTypePlugin constructor.
+     *
+     * @param \FondOfSpryker\Zed\Mail\MailConfig $config
+     */
+    public function __construct(MailConfig $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * @api
      *
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
      * @return void
      */
-    public function build(MailBuilderInterface $mailBuilder)
+    public function build(MailBuilderInterface $mailBuilder): void
     {
         $this
             ->setSubject($mailBuilder)
@@ -37,9 +53,21 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     /**
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
-     * @return $this|\Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
+     * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
      */
-    protected function setSubject(MailBuilderInterface $mailBuilder)
+    protected function setSender(MailBuilderInterface $mailBuilder): self
+    {
+        $mailBuilder->setSender($this->config->getSenderEmail(), $this->config->getSenderName());
+
+        return $this;
+    }
+
+    /**
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
+     *
+     * @return $this
+     */
+    protected function setSubject(MailBuilderInterface $mailBuilder): self
     {
         /** @var \Generated\Shared\Transfer\OrderTransfer $orderTransfer */
         $orderTransfer = $mailBuilder->getMailTransfer()->requireOrder()->getOrder();
