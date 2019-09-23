@@ -15,7 +15,7 @@
     "spryker/glossary": "^3.7.0",
     "spryker/kernel": "^3.37.5",
     "spryker/zed-request": "^3.8.1",
-    "spryker/oms": "^10.3.0"
+    "spryker/oms": "^10.4.0"
   },
   "require-dev": {
     "spryker/code-sniffer": "^0.14.7",
