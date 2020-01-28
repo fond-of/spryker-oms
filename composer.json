@@ -11,11 +11,11 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.1",
-    "spryker/glossary": "^3.7.0",
-    "spryker/kernel": "^3.37.5",
-    "spryker/zed-request": "^3.8.1",
-    "spryker/oms": "^10.4.0"
+    "php": ">=7.2",
+    "spryker/glossary": "^3.8.0",
+    "spryker/kernel": "^3.42.4",
+    "spryker/zed-request": "^3.12.0",
+    "spryker/oms": "^11.1.0"
   },
   "require-dev": {
     "spryker/code-sniffer": "^0.14.7",
@@ -24,7 +24,7 @@
     "phpro/grumphp": "^0.14",
     "sebastian/phpcpd": "^4.1",
     "php-coveralls/php-coveralls": "^2.0",
-    "spryker/kernel": "^3.37.5",
+    "spryker/kernel": "^3.42.4",
     "spryker/application": "^3.19.0"
   },
   "autoload": {
