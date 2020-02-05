@@ -19,8 +19,6 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     protected $config;
 
     /**
-     * OrderConfirmationMailTypePlugin constructor.
-     *
      * @param \FondOfSpryker\Zed\Mail\MailConfig $config
      */
     public function __construct(MailConfig $config)
@@ -53,9 +51,9 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     /**
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
-     * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
+     * @return $this
      */
-    protected function setSender(MailBuilderInterface $mailBuilder): self
+    protected function setSender(MailBuilderInterface $mailBuilder)
     {
         $mailBuilder->setSender($this->config->getSenderEmail(), $this->config->getSenderName());
 
@@ -67,7 +65,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      *
      * @return $this
      */
-    protected function setSubject(MailBuilderInterface $mailBuilder): self
+    protected function setSubject(MailBuilderInterface $mailBuilder)
     {
         /** @var \Generated\Shared\Transfer\OrderTransfer $orderTransfer */
         $orderTransfer = $mailBuilder->getMailTransfer()->requireOrder()->getOrder();
@@ -105,7 +103,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      *
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
-     * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
+     * @return $this
      */
     protected function setRegionBillingAddress(MailBuilderInterface $mailBuilder)
     {
@@ -128,7 +126,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      *
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
-     * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
+     * @return $this
      */
     protected function setRegionShippingAddress(MailBuilderInterface $mailBuilder)
     {
@@ -203,7 +201,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     /**
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
-     * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
+     * @return $this
      */
     protected function isBillingAddressInEU(MailBuilderInterface $mailBuilder)
     {
