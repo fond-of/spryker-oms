@@ -130,7 +130,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      */
     protected function setRegionShippingAddress(MailBuilderInterface $mailBuilder)
     {
-        $shippingAddress = $mailBuilder->getMailTransfer()->getOrder()->getShippingAddress();
+        $shippingAddress = $this->getShippingAddress($mailBuilder);
 
         if ($shippingAddress->getFkRegion()) {
             $spyRegion = SpyRegionQuery::create()->findPk(
@@ -180,7 +180,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      */
     protected function setCountryShippingAddress(MailBuilderInterface $mailBuilder)
     {
-        $shippingAddress = $mailBuilder->getMailTransfer()->getOrder()->getShippingAddress();
+        $shippingAddress = $this->getShippingAddress($mailBuilder);
 
         if ($shippingAddress->getFkCountry()) {
             $spyCountry = SpyCountryQuery::create()->findPk(
@@ -216,4 +216,31 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
 
         return $this;
     }
+
+    /**
+     * @param  \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface  $mailBuilder
+     *
+     * @return \Generated\Shared\Transfer\AddressTransfer|null
+     */
+    protected function getShippingAddress(MailBuilderInterface $mailBuilder)
+    {
+//ToDo SprykerUpgrade remove workaround!
+        $orderTransfer = $mailBuilder->getMailTransfer()->getOrder();
+        $shippingAddress = null;
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($shippingAddress !== null) {
+                continue;
+            }
+            if ($itemTransfer !== null && $itemTransfer->getShipment() !== null && $itemTransfer->getShipment()->getShippingAddress() !== null) {
+                $shippingAddress = $itemTransfer->getShipment()->getShippingAddress();
+            }
+        }
+
+        if ($shippingAddress === null && $orderTransfer !== null && method_exists($orderTransfer,
+                'getShippingAddress')) {
+            $shippingAddress = $orderTransfer->getShippingAddress();
+        }
+        return $shippingAddress;
+        //End ToDo
+}
 }
