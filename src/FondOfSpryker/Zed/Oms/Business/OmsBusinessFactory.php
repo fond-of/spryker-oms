@@ -7,6 +7,7 @@
 
 namespace FondOfSpryker\Zed\Oms\Business;
 
+use FondOfSpryker\Zed\Oms\Business\OrderStateMachine\Timeout;
 use FondOfSpryker\Zed\Oms\Business\Util\Reservation;
 use Spryker\Zed\Oms\Business\OmsBusinessFactory as SprykerOmsBusinessFactory;
 
@@ -26,6 +27,16 @@ class OmsBusinessFactory extends SprykerOmsBusinessFactory
             $this->getQueryContainer(),
             $this->getReservationHandlerPlugins(),
             $this->getStoreFacade()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Oms\Business\OrderStateMachine\TimeoutInterface
+     */
+    public function createOrderStateMachineTimeout()
+    {
+        return new Timeout(
+            $this->getQueryContainer()
         );
     }
 }
