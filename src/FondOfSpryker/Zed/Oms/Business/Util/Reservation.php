@@ -7,9 +7,6 @@
 
 namespace FondOfSpryker\Zed\Oms\Business\Util;
 
-use Generated\Shared\Transfer\StoreTransfer;
-use Spryker\Zed\Oms\Dependency\Facade\OmsToStoreFacadeInterface;
-use Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface;
 use Spryker\Zed\Oms\Business\Util\Reservation as SprykerReservation;
 
 class Reservation extends SprykerReservation implements ReservationInterface
