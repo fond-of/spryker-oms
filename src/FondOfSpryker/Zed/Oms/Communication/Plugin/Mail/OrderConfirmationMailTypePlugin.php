@@ -3,7 +3,7 @@
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
 use FondOfSpryker\Shared\Customer\CustomerConstants;
-use FondOfSpryker\Zed\Mail\MailConfig;
+use Spryker\Zed\Mail\MailConfig;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
@@ -14,12 +14,12 @@ use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
 {
     /**
-     * @var \FondOfSpryker\Zed\Mail\MailConfig
+     * @var \Spryker\Zed\Mail\MailConfig
      */
     protected $config;
 
     /**
-     * @param \FondOfSpryker\Zed\Mail\MailConfig $config
+     * @param \Spryker\Zed\Mail\MailConfig $config
      */
     public function __construct(MailConfig $config)
     {
@@ -89,7 +89,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
             return 'default.';
         }
 
-        $arrStore = explode("_", $orderTransfer->getStore());
+        $arrStore = explode('_', $orderTransfer->getStore());
 
         if (is_array($arrStore) && count($arrStore) > 0) {
             return strtolower($arrStore[0]);
