@@ -94,6 +94,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         if (count($arrStore) > 0) {
             return strtolower($arrStore[0]);
         }
+
         // @phpstan-ignore-next-line
         return 'default.';
     }
