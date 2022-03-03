@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\Oms\Business\OrderStateMachine;
 
+use Generated\Shared\Transfer\OmsCheckTimeoutsQueryCriteriaTransfer;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Oms\Business\OrderStateMachine\OrderStateMachineInterface;
 use Spryker\Zed\Oms\Business\OrderStateMachine\Timeout as SprykerTimeout;
@@ -15,11 +16,14 @@ class Timeout extends SprykerTimeout implements TimeoutInterface
 
     /**
      * @param \Spryker\Zed\Oms\Business\OrderStateMachine\OrderStateMachineInterface $orderStateMachine
+     * @param \Generated\Shared\Transfer\OmsCheckTimeoutsQueryCriteriaTransfer|null $omsCheckTimeoutsQueryCriteriaTransfer
      *
      * @return int
      */
-    public function checkTimeouts(OrderStateMachineInterface $orderStateMachine)
-    {
+    public function checkTimeouts(
+        OrderStateMachineInterface $orderStateMachine,
+        ?OmsCheckTimeoutsQueryCriteriaTransfer $omsCheckTimeoutsQueryCriteriaTransfer = null
+    ) {
         $this->countAffectedItems = 0;
         $orderItems = $this->findItemsWithExpiredTimeouts();
 
@@ -38,7 +42,8 @@ class Timeout extends SprykerTimeout implements TimeoutInterface
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $groupedOrderItems
+     * @param array<int, array<string, array<\Orm\Zed\Sales\Persistence\SpySalesOrderItem>>> $groupedOrderItems
+     *
      * @return array
      */
     protected function filterByActiveStore(array $groupedOrderItems): array
@@ -46,13 +51,13 @@ class Timeout extends SprykerTimeout implements TimeoutInterface
         $activeStore = $this->getCurrentStore();
         foreach ($groupedOrderItems as $idSalesOrder => $orderData) {
             $salesOrder = $this->queryContainer->querySalesOrderById($idSalesOrder)->findOneByStore($activeStore);
-            if ($salesOrder === null){
+            if ($salesOrder === null) {
                 $this->countAffectedItems -= count($orderData);
                 unset($groupedOrderItems[$idSalesOrder]);
             }
         }
 
-        return  $groupedOrderItems;
+        return $groupedOrderItems;
     }
 
     /**

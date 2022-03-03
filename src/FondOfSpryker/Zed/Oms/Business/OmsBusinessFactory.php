@@ -17,7 +17,9 @@ class OmsBusinessFactory extends SprykerOmsBusinessFactory
     public function createOrderStateMachineTimeout()
     {
         return new Timeout(
-            $this->getQueryContainer()
+            $this->getQueryContainer(),
+            $this->createTimeoutProcessorCollection(),
+            $this->getConfig(),
         );
     }
 }

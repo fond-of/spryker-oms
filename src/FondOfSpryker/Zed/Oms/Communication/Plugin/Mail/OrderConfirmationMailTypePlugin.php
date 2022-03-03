@@ -3,12 +3,12 @@
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
 use FondOfSpryker\Shared\Customer\CustomerConstants;
-use Spryker\Zed\Mail\MailConfig;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Country\Persistence\SpyRegionQuery;
 use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
+use Spryker\Zed\Mail\MailConfig;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as SprykerOrderConfirmationMailTypePlugin;
 
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
@@ -90,11 +90,11 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         }
 
         $arrStore = explode('_', $orderTransfer->getStore());
-
-        if (is_array($arrStore) && count($arrStore) > 0) {
+        // @phpstan-ignore-next-line
+        if (count($arrStore) > 0) {
             return strtolower($arrStore[0]);
         }
-
+        // @phpstan-ignore-next-line
         return 'default.';
     }
 
@@ -112,7 +112,6 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         if ($billingAddress->getFkRegion()) {
             $spyRegion = SpyRegionQuery::create()->findPk(
                 $billingAddress->getFkRegion(),
-                null
             );
 
             $billingAddress->setRegion($spyRegion->getIso2Code());
@@ -135,7 +134,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         if ($shippingAddress->getFkRegion()) {
             $spyRegion = SpyRegionQuery::create()->findPk(
                 $shippingAddress->getFkRegion(),
-                null
+                null,
             );
 
             $shippingAddress->setRegion($spyRegion->getIso2Code());
@@ -158,7 +157,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         if ($billingAddress->getFkCountry()) {
             $spyCountry = SpyCountryQuery::create()->findPk(
                 $billingAddress->getFkCountry(),
-                null
+                null,
             );
 
             $countryTransfer = new CountryTransfer();
@@ -185,7 +184,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         if ($shippingAddress->getFkCountry()) {
             $spyCountry = SpyCountryQuery::create()->findPk(
                 $shippingAddress->getFkCountry(),
-                null
+                null,
             );
 
             $countryTransfer = new CountryTransfer();
@@ -218,7 +217,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     }
 
     /**
-     * @param  \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface  $mailBuilder
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
      * @return \Generated\Shared\Transfer\AddressTransfer|null
      */
@@ -236,11 +235,16 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
             }
         }
 
-        if ($shippingAddress === null && $orderTransfer !== null && method_exists($orderTransfer,
-                'getShippingAddress')) {
+        if (
+            $shippingAddress === null && $orderTransfer !== null && method_exists(
+                $orderTransfer,
+                'getShippingAddress',
+            )
+        ) {
             $shippingAddress = $orderTransfer->getShippingAddress();
         }
+
         return $shippingAddress;
         //End ToDo
-}
+    }
 }
