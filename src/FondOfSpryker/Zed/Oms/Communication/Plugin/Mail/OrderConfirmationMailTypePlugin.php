@@ -4,6 +4,7 @@ namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
 use FondOfSpryker\Shared\Customer\CustomerConstants;
 use Generated\Shared\Transfer\CountryTransfer;
+use Generated\Shared\Transfer\MailAttachmentTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Country\Persistence\SpyRegionQuery;
@@ -11,6 +12,9 @@ use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
 use Spryker\Zed\Mail\MailConfig;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as SprykerOrderConfirmationMailTypePlugin;
 
+/**
+ * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
+ */
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
 {
     /**
@@ -45,7 +49,8 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
             ->setRegionShippingAddress($mailBuilder)
             ->setCountryBillingAddress($mailBuilder)
             ->setCountryShippingAddress($mailBuilder)
-            ->isBillingAddressInEU($mailBuilder);
+            ->isBillingAddressInEU($mailBuilder)
+            ->setWarrantyConditions($mailBuilder);
     }
 
     /**
@@ -247,5 +252,40 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
 
         return $shippingAddress;
         //End ToDo
+    }
+
+    /**
+     * @param MailBuilderInterface $mailBuilder
+     *
+     * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
+     */
+    protected function setWarrantyConditions(MailBuilderInterface $mailBuilder)
+    {
+        $warrantyConditionsUrl = $this->getConfig()->getWarrantyConditionsUrl();
+
+        if(!$warrantyConditionsUrl || !file_exists($warrantyConditionsUrl)) {
+            return $this;
+        }
+
+        return $this->addAttachment($mailBuilder, $warrantyConditionsUrl);
+    }
+
+    /**
+     * @param MailBuilderInterface $mailBuilder
+     * @param string $attachmentUrl
+     *
+     * @return $this
+     */
+    protected function addAttachment(MailBuilderInterface $mailBuilder, string $attachmentUrl)
+    {
+        $attachments = $mailBuilder->getMailTransfer()->getAttachments();
+
+        $attachment = (new MailAttachmentTransfer)->setAttachmentUrl($attachmentUrl);
+
+        $attachments->append($attachment);
+
+        $mailBuilder->getMailTransfer()->setAttachments($attachments);
+
+        return $this;
     }
 }
