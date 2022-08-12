@@ -20,14 +20,14 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     /**
      * @var \Spryker\Zed\Mail\MailConfig
      */
-    protected $config;
+    protected $mailConfig;
 
     /**
-     * @param \Spryker\Zed\Mail\MailConfig $config
+     * @param \Spryker\Zed\Mail\MailConfig $mailConfig
      */
-    public function __construct(MailConfig $config)
+    public function __construct(MailConfig $mailConfig)
     {
-        $this->config = $config;
+        $this->mailConfig = $mailConfig;
     }
 
     /**
@@ -60,7 +60,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      */
     protected function setSender(MailBuilderInterface $mailBuilder)
     {
-        $mailBuilder->setSender($this->config->getSenderEmail(), $this->config->getSenderName());
+        $mailBuilder->setSender($this->mailConfig->getSenderEmail(), $this->mailConfig->getSenderName());
 
         return $this;
     }
