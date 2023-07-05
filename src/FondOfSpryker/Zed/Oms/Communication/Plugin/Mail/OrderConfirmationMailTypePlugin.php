@@ -264,7 +264,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
         $warrantyConditionsByLocale = $this->getConfig()->getWarrantyConditionsUrl();
         $localeName = $mailBuilder->getMailTransfer()->getLocale()->getLocaleName();
 
-        if (!isset($warrantyConditionsByLocale[$localeName])) {
+        if (!array_key_exists($localeName, $warrantyConditionsByLocale)) {
             return $this;
         }
 
