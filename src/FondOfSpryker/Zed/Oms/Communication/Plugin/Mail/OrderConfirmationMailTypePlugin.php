@@ -261,13 +261,18 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
      */
     protected function setWarrantyConditions(MailBuilderInterface $mailBuilder)
     {
-        $warrantyConditionsUrl = $this->getConfig()->getWarrantyConditionsUrl();
+        $warrantyConditionsByLocale = $this->getConfig()->getWarrantyConditionsUrl();
+        $localeName = $mailBuilder->getMailTransfer()->getLocale()->getLocaleName();
 
-        if(!$warrantyConditionsUrl || !file_exists($warrantyConditionsUrl)) {
+        if (!isset($warrantyConditionsByLocale[$localeName])) {
             return $this;
         }
 
-        return $this->addAttachment($mailBuilder, $warrantyConditionsUrl);
+        if(!$warrantyConditionsByLocale[$localeName] || !file_exists($warrantyConditionsByLocale[$localeName])) {
+            return $this;
+        }
+
+        return $this->addAttachment($mailBuilder, $warrantyConditionsByLocale[$localeName]);
     }
 
     /**
