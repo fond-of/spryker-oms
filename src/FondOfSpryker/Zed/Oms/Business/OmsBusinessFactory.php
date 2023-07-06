@@ -5,11 +5,11 @@ namespace FondOfSpryker\Zed\Oms\Business;
 use FondOfSpryker\Zed\Oms\Business\OrderStateMachine\Timeout;
 use Spryker\Zed\Oms\Business\OmsBusinessFactory as SprykerOmsBusinessFactory;
 
-// @codingStandardsIgnoreStart
+// phpcs:disable
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
  */
-// @codingStandardsIgnoreEnd
+// phpcs:enable
 class OmsBusinessFactory extends SprykerOmsBusinessFactory
 {
     /**

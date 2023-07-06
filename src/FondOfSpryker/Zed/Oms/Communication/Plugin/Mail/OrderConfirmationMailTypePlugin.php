@@ -13,11 +13,11 @@ use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
 use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
 use Spryker\Zed\Mail\MailConfig;
 
-// @codingStandardsIgnoreStart
+// phpcs:disable
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
  */
-// @codingStandardsIgnoreEnd
+// phpcs:enable
 class OrderConfirmationMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface
 {
     /**
