@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.34",
     "fond-of-spryker/customer": "*",
     "spryker/oms": "^11.10.0",
     "spryker/propel": "^3.28.0"
@@ -31,6 +31,12 @@
       "FondOfSpryker\\": "tests/FondOfSpryker/",
       "Generated\\": "src/Generated/",
       "Orm\\Zed\\": "src/Orm/Zed/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }
