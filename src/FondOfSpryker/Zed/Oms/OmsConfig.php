@@ -8,10 +8,10 @@ use Spryker\Zed\Oms\OmsConfig as SprykerOmsConfig;
 class OmsConfig extends SprykerOmsConfig
 {
     /**
-     * @return string|false
+     * @return array
      */
-    public function getWarrantyConditionsUrl(): ?string
+    public function getWarrantyConditionsUrl(): array
     {
-        return $this->get(OmsConstants::WARRANTY_CONDITIONS_URL, false);
+        return $this->get(OmsConstants::WARRANTY_CONDITIONS_URL, []);
     }
 }

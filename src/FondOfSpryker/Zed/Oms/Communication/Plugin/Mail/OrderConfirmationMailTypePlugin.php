@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
 use FondOfSpryker\Shared\Customer\CustomerConstants;
@@ -8,19 +8,37 @@ use Generated\Shared\Transfer\MailAttachmentTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Country\Persistence\SpyRegionQuery;
+use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
+use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
 use Spryker\Zed\Mail\MailConfig;
-use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as SprykerOrderConfirmationMailTypePlugin;
 
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
  */
-class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
+class OrderConfirmationMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface
 {
+    /**
+     * @var string
+     */
+    public const MAIL_TYPE = 'order confirmation mail';
+
     /**
      * @var \Spryker\Zed\Mail\MailConfig
      */
     protected $mailConfig;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return static::MAIL_TYPE;
+    }
 
     /**
      * @param \Spryker\Zed\Mail\MailConfig $mailConfig
@@ -51,6 +69,47 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
             ->setCountryShippingAddress($mailBuilder)
             ->isBillingAddressInEU($mailBuilder)
             ->setWarrantyConditions($mailBuilder);
+    }
+
+    /**
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
+     *
+     * @return $this
+     */
+    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder)
+    {
+        $mailBuilder->setHtmlTemplate('oms/mail/order_confirmation.html.twig');
+
+        return $this;
+    }
+
+    /**
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
+     *
+     * @return $this
+     */
+    protected function setTextTemplate(MailBuilderInterface $mailBuilder)
+    {
+        $mailBuilder->setTextTemplate('oms/mail/order_confirmation.text.twig');
+
+        return $this;
+    }
+
+    /**
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
+     *
+     * @return $this
+     */
+    protected function setRecipient(MailBuilderInterface $mailBuilder)
+    {
+        $orderTransfer = $mailBuilder->getMailTransfer()->requireOrder()->getOrder();
+
+        $mailBuilder->addRecipient(
+            $orderTransfer->getEmail(),
+            $orderTransfer->getFirstName() . ' ' . $orderTransfer->getLastName(),
+        );
+
+        return $this;
     }
 
     /**
@@ -255,23 +314,28 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     }
 
     /**
-     * @param MailBuilderInterface $mailBuilder
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
      * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
      */
     protected function setWarrantyConditions(MailBuilderInterface $mailBuilder)
     {
-        $warrantyConditionsUrl = $this->getConfig()->getWarrantyConditionsUrl();
+        $warrantyConditionsByLocale = $this->getConfig()->getWarrantyConditionsUrl();
+        $localeName = $mailBuilder->getMailTransfer()->getLocale()->getLocaleName();
 
-        if(!$warrantyConditionsUrl || !file_exists($warrantyConditionsUrl)) {
+        if (!array_key_exists($localeName, $warrantyConditionsByLocale)) {
             return $this;
         }
 
-        return $this->addAttachment($mailBuilder, $warrantyConditionsUrl);
+        if (!$warrantyConditionsByLocale[$localeName] || !file_exists($warrantyConditionsByLocale[$localeName])) {
+            return $this;
+        }
+
+        return $this->addAttachment($mailBuilder, $warrantyConditionsByLocale[$localeName]);
     }
 
     /**
-     * @param MailBuilderInterface $mailBuilder
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      * @param string $attachmentUrl
      *
      * @return $this
@@ -280,7 +344,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     {
         $attachments = $mailBuilder->getMailTransfer()->getAttachments();
 
-        $attachment = (new MailAttachmentTransfer)->setAttachmentUrl($attachmentUrl);
+        $attachment = (new MailAttachmentTransfer())->setAttachmentUrl($attachmentUrl);
 
         $attachments->append($attachment);
 
