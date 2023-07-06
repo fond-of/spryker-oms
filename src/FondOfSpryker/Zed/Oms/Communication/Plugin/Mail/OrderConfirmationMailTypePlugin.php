@@ -14,7 +14,6 @@ use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as
 
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
- * @method \FondOfSpryker\Zed\Oms\Business\OmsBusinessFactory getFactory()()
  */
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
 {
