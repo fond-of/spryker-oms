@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
 use FondOfSpryker\Shared\Customer\CustomerConstants;

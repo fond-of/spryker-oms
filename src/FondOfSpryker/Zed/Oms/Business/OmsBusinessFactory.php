@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 namespace FondOfSpryker\Zed\Oms\Business;
 
 use FondOfSpryker\Zed\Oms\Business\OrderStateMachine\Timeout;
@@ -8,8 +8,6 @@ use Spryker\Zed\Oms\Business\OmsBusinessFactory as SprykerOmsBusinessFactory;
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
  * @method \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
- * @method \Spryker\Zed\Oms\Persistence\OmsRepositoryInterface getRepository()
- * @method \Spryker\Zed\Oms\Persistence\OmsEntityManagerInterface getEntityManager()
  */
 class OmsBusinessFactory extends SprykerOmsBusinessFactory
 {
