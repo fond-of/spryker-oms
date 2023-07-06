@@ -5,10 +5,11 @@ namespace FondOfSpryker\Zed\Oms\Business;
 use FondOfSpryker\Zed\Oms\Business\OrderStateMachine\Timeout;
 use Spryker\Zed\Oms\Business\OmsBusinessFactory as SprykerOmsBusinessFactory;
 
+// @codingStandardsIgnoreStart
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
- * @method \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
  */
+// @codingStandardsIgnoreEnd
 class OmsBusinessFactory extends SprykerOmsBusinessFactory
 {
     /**
