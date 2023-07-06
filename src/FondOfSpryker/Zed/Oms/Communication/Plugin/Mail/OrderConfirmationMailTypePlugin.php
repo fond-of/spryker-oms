@@ -14,6 +14,7 @@ use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin as
 
 /**
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
+ * @method \FondOfSpryker\Zed\Oms\Business\OmsBusinessFactory getFactory()()
  */
 class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePlugin
 {
@@ -255,7 +256,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     }
 
     /**
-     * @param MailBuilderInterface $mailBuilder
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      *
      * @return \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin
      */
@@ -268,7 +269,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
             return $this;
         }
 
-        if(!$warrantyConditionsByLocale[$localeName] || !file_exists($warrantyConditionsByLocale[$localeName])) {
+        if (!$warrantyConditionsByLocale[$localeName] || !file_exists($warrantyConditionsByLocale[$localeName])) {
             return $this;
         }
 
@@ -276,7 +277,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     }
 
     /**
-     * @param MailBuilderInterface $mailBuilder
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      * @param string $attachmentUrl
      *
      * @return $this
@@ -285,7 +286,7 @@ class OrderConfirmationMailTypePlugin extends SprykerOrderConfirmationMailTypePl
     {
         $attachments = $mailBuilder->getMailTransfer()->getAttachments();
 
-        $attachment = (new MailAttachmentTransfer)->setAttachmentUrl($attachmentUrl);
+        $attachment = (new MailAttachmentTransfer())->setAttachmentUrl($attachmentUrl);
 
         $attachments->append($attachment);
 
