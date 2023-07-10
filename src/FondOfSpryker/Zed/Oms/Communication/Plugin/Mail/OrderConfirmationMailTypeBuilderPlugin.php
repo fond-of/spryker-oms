@@ -13,6 +13,10 @@ use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Country\Persistence\SpyRegionQuery;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypeBuilderPlugin as SprykerOrderConfirmationMailTypeBuilderPlugin;
 
+/**
+ * @method \FondOfSpryker\Zed\Oms\Communication\OmsCommunicationFactory getFactory()
+ * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
+ */
 class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMailTypeBuilderPlugin
 {
     /**
