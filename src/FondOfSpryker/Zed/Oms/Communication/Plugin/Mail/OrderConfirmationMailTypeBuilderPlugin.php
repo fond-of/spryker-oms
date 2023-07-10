@@ -66,8 +66,6 @@ class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMai
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
      *
-     * @throws \Exception
-     *
      * @return void
      */
     protected function setSubject(MailTransfer $mailTransfer): void
@@ -78,8 +76,6 @@ class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMai
         $subject = $this->getFactory()->getGlossaryFacade()->translate($brand . '.mail.order_confirmation.subject', [
             '%ref%' => $orderTransfer->getOrderReference(),
         ]);
-
-        throw new Exception($subject);
 
         $mailTransfer->setSubject($subject);
     }
