@@ -8,12 +8,12 @@ use Spryker\Zed\Glossary\Business\GlossaryFacadeInterface;
 class OmsToGlossaryFacadeBridge implements OmsToGlossaryFacadeInterface
 {
     /**
-     * @var GlossaryFacadeInterface
+     * @var \Spryker\Zed\Glossary\Business\GlossaryFacadeInterface
      */
     protected $glossaryFacade;
 
     /**
-     * @param GlossaryFacadeInterface $glossaryFacade
+     * @param \Spryker\Zed\Glossary\Business\GlossaryFacadeInterface $glossaryFacade
      */
     public function __construct(GlossaryFacadeInterface $glossaryFacade)
     {

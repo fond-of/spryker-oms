@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
+use Exception;
 use FondOfSpryker\Shared\Customer\CustomerConstants;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
@@ -15,17 +16,20 @@ use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypeBuilderPl
 
 class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMailTypeBuilderPlugin
 {
+    /**
+     * @var string
+     */
     public const MAIL_TYPE = 'order confirmation mail';
 
     /**
      * {@inheritDoc}
      * - Builds the `MailTransfer` with data for an order confirmation mail.
      *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
      *
      * @return \Generated\Shared\Transfer\MailTransfer
-     * @api
-     *
      */
     public function build(MailTransfer $mailTransfer): MailTransfer
     {
@@ -62,6 +66,8 @@ class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMai
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
      *
+     * @throws \Exception
+     *
      * @return void
      */
     protected function setSubject(MailTransfer $mailTransfer): void
@@ -73,7 +79,7 @@ class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMai
             '%ref%' => $orderTransfer->getOrderReference(),
         ]);
 
-        throw new \Exception($subject);
+        throw new Exception($subject);
 
         $mailTransfer->setSubject($subject);
     }
@@ -205,7 +211,7 @@ class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMai
     {
         $attachments = $mailTransfer->getAttachments();
 
-        $attachment = (new MailAttachmentTransfer)->setAttachmentUrl($attachmentUrl);
+        $attachment = (new MailAttachmentTransfer())->setAttachmentUrl($attachmentUrl);
 
         $attachments->append($attachment);
 
