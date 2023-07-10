@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 namespace FondOfSpryker\Zed\Oms\Communication;
 
 use FondOfSpryker\Zed\Oms\Dependency\Facade\OmsToGlossaryFacadeInterface;

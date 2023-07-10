@@ -2,7 +2,6 @@
 
 namespace FondOfSpryker\Zed\Oms\Communication\Plugin\Mail;
 
-use Exception;
 use FondOfSpryker\Shared\Customer\CustomerConstants;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
