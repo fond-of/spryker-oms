@@ -14,6 +14,8 @@ use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
 use Spryker\Zed\Mail\MailConfig;
 
 /**
+ * @deprecated Use {@link \FondOfSpryker\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypeBuilderPlugin} instead.
+ *
  * @method \FondOfSpryker\Zed\Oms\OmsConfig getConfig()
  */
 class OrderConfirmationMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface

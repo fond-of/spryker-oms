@@ -73,6 +73,8 @@ class OrderConfirmationMailTypeBuilderPlugin extends SprykerOrderConfirmationMai
             '%ref%' => $orderTransfer->getOrderReference(),
         ]);
 
+        throw new \Exception($subject);
+
         $mailTransfer->setSubject($subject);
     }
 
